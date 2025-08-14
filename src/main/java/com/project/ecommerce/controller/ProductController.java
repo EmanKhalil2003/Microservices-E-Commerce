@@ -34,10 +34,9 @@ public class ProductController {
     @GetMapping("/products")
     public Page<ProductSummaryDTO> getAllProducts(
             @PageableDefault(size = 10) Pageable pageable,
-            @RequestHeader("X-User-Id") Long userId,
-            @RequestHeader("X-Role") String role) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        System.out.println("Request by user: " + userId + ", role: " + role);
+        System.out.println("Request by user: " + userId);
         return productService.getAllProductSummaries(pageable);
     }
 
@@ -45,14 +44,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDetailsDTO>> getAllProductDetailsSorted(
             @RequestParam(name = "sortBy", required = false) String sortBy,
             @RequestParam(defaultValue = "asc") String order,
-            @RequestHeader("X-User-Id") Long userId,
-            @RequestHeader("X-Role") String role) {
+            @RequestHeader("X-User-Id") Long userId) {
 
         if (sortBy == null) {
             throw new MissingFilterParameterException("Missing required parameter: SortBy");
         }
 
-        System.out.println("Request by user: " + userId + ", role: " + role);
+        System.out.println("Request by user: " + userId);
         List<ProductDetailsDTO> products = productService.getAllProductDetailsSorted(sortBy, order);
         return ResponseEntity.ok(products);
     }
@@ -60,10 +58,9 @@ public class ProductController {
     @GetMapping("/products/{productId}")
     public ResponseEntity<ProductDetailsDTO> getProductDetailsWithReviews(
             @PathVariable Long productId,
-            @RequestHeader("X-User-Id") Long userId,
-            @RequestHeader("X-Role") String role) {
+            @RequestHeader("X-User-Id") Long userId) {
 
-        System.out.println("Request by user: " + userId + ", role: " + role);
+        System.out.println("Request by user: " + userId);
         ProductDetailsDTO productDetails = productService.getProductDetailsWithReviews(productId);
         return ResponseEntity.ok(productDetails);
     }
@@ -72,14 +69,13 @@ public class ProductController {
     public Page<ProductDetailsDTO> searchProducts(
             @RequestParam(name = "query", required = false) String query,
             @PageableDefault(size = 10) Pageable pageable,
-            @RequestHeader("X-User-Id") Long userId,
-            @RequestHeader("X-Role") String role) {
+            @RequestHeader("X-User-Id") Long userId) {
 
         if (query == null) {
             throw new MissingSearchParameterException("Missing required parameter: query");
         }
 
-        System.out.println("Request by user: " + userId + ", role: " + role);
+        System.out.println("Request by user: " + userId);
         return productService.searchProducts(query, pageable);
     }
 }
